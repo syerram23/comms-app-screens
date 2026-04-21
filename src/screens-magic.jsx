@@ -603,19 +603,36 @@ function ScreenMagicBuilder() {
 
             <div style={{ height: 1, background: 'var(--line)', margin: '4px 0 16px' }} />
 
-            {/* Email recipients */}
+            {/* People picker */}
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 8 }}>Email recipients</div>
-              <textarea rows={3} defaultValue={"maria@harbor.co\njordan@harbor.co\nashley@harbor.co"} style={{
-                width: '100%', fontFamily: 'var(--mono)', fontSize: 12, padding: '8px 12px',
-                border: '1px solid var(--line)', borderRadius: 8, background: 'var(--bg)',
-                color: 'var(--ink)', outline: 'none', resize: 'vertical', boxSizing: 'border-box',
-              }} />
-              <button style={{
-                marginTop: 6, background: 'transparent', border: '1px solid var(--line)',
-                borderRadius: 999, padding: '5px 12px', fontSize: 11, color: 'var(--ink-3)',
-                cursor: 'pointer', fontFamily: 'var(--sans)',
-              }}>Upload CSV</button>
+              <div className="meta" style={{ marginBottom: 6 }}>SEND TO PEOPLE</div>
+              <div style={{
+                border: '1px solid var(--line)', borderRadius: 10, maxHeight: 140,
+                overflowY: 'auto', background: 'var(--bg)',
+              }}>
+                {[
+                  { name: 'María Ortega', email: 'maria@novus.co', checked: true },
+                  { name: 'Jordan Reyes', email: 'j.reyes@novus.co', checked: true },
+                  { name: 'Devin Park', email: 'd.park@harbor.co', checked: true },
+                  { name: 'Aisha Bello', email: 'a.bello@harbor.co', checked: false },
+                  { name: 'Taylor Nguyen', email: 't.nguyen@summit.co', checked: false },
+                ].map((p, i) => (
+                  <label key={i} style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '7px 12px', borderBottom: '1px solid var(--line)',
+                    cursor: 'pointer', fontSize: 12,
+                  }}>
+                    <input type="checkbox" defaultChecked={p.checked} style={{ accentColor: 'var(--accent)' }} />
+                    <span style={{ fontWeight: 500 }}>{p.name}</span>
+                    <span style={{ color: 'var(--ink-4)', fontFamily: 'var(--mono)', fontSize: 10 }}>{p.email}</span>
+                  </label>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: 8, marginTop: 6, fontSize: 11 }}>
+                <Pill tone="accent">3 selected</Pill>
+                <span style={{ color: 'var(--ink-4)', cursor: 'pointer' }}>Upload CSV</span>
+                <span style={{ color: 'var(--ink-4)', cursor: 'pointer' }}>Paste emails</span>
+              </div>
             </div>
 
             {/* Subject */}

@@ -10,6 +10,7 @@ function ScreenSend() {
   const [reminders, setReminders] = useStateSS(3);
   const [schedule, setSchedule] = useStateSS('now');
   const [sent, setSent]         = useStateSS(false);
+  const [sendSearch, setSendSearch] = useStateSS('');
 
   if (sent) {
     return (
@@ -56,27 +57,66 @@ function ScreenSend() {
             </div>
 
             {tab === 'email' && (<>
-              {/* Recipients */}
+              {/* People picker */}
               <div style={{ marginBottom:24 }}>
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
-                  <div className="meta">RECIPIENTS</div>
-                  <a href="Participants.html" style={{ fontSize:12, color:'var(--accent-ink)', textDecoration:'underline', textUnderlineOffset:3 }}>Edit list</a>
+                <div className="meta" style={{ marginBottom: 8 }}>SEND TO PEOPLE</div>
+
+                {/* Search + org filter row */}
+                <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+                  <input placeholder="Search people..." value={sendSearch} onChange={e => setSendSearch(e.target.value)} style={{
+                    flex: 1, padding: '8px 12px', border: '1px solid var(--line)',
+                    borderRadius: 8, fontSize: 12, fontFamily: 'var(--sans)', background: 'var(--bg)',
+                  }} />
+                  <select style={{
+                    padding: '8px 12px', border: '1px solid var(--line)', borderRadius: 8,
+                    fontSize: 12, background: 'var(--bg)', color: 'var(--ink-2)',
+                  }}>
+                    <option>All orgs</option>
+                    <option>Harbor Inc.</option>
+                    <option>Novus Staffing</option>
+                    <option>Summit Field</option>
+                  </select>
                 </div>
-                <div style={{ fontSize:13, color:'var(--ink-2)', marginBottom:10 }}>12 recipients selected</div>
-                <div style={{ display:'flex', gap:6, flexWrap:'wrap', marginBottom:10 }}>
-                  {['Jordan Reeves','Maria Santos','Tyler Chen'].map(name => (
-                    <span key={name} style={{
-                      display:'inline-flex', alignItems:'center', gap:6,
-                      padding:'5px 10px', background:'var(--chip)', borderRadius:999,
-                      fontSize:12, color:'var(--ink-2)', border:'1px solid var(--line)',
+
+                {/* Scrollable people list with checkboxes */}
+                <div style={{
+                  border: '1px solid var(--line)', borderRadius: 10, maxHeight: 180,
+                  overflowY: 'auto', background: 'var(--bg)',
+                }}>
+                  {[
+                    { name: 'María Ortega', email: 'maria@novusstaffing.co', org: 'Novus', checked: true },
+                    { name: 'Jordan Reyes', email: 'j.reyes@novusstaffing.co', org: 'Novus', checked: true },
+                    { name: 'Devin Park', email: 'd.park@harbor.co', org: 'Harbor', checked: true },
+                    { name: 'Aisha Bello', email: 'a.bello@harbor.co', org: 'Harbor', checked: true },
+                    { name: 'Taylor Nguyen', email: 't.nguyen@summitfield.co', org: 'Summit', checked: false },
+                    { name: 'Sam Okonkwo', email: 's.okonkwo@harbor.co', org: 'Harbor', checked: false },
+                    { name: 'Ashley Tran', email: 'a.tran@novusstaffing.co', org: 'Novus', checked: true },
+                    { name: 'Nina Patel', email: 'n.patel@individual.co', org: 'Individual', checked: false },
+                  ].map((p, i) => (
+                    <label key={i} style={{
+                      display: 'grid', gridTemplateColumns: '20px 1fr auto', gap: 10,
+                      alignItems: 'center', padding: '8px 12px',
+                      borderBottom: '1px solid var(--line)', cursor: 'pointer',
+                      fontSize: 12,
                     }}>
-                      {name}
-                      <span style={{ cursor:'pointer', color:'var(--ink-4)', fontSize:10 }}>{'\u2715'}</span>
-                    </span>
+                      <input type="checkbox" defaultChecked={p.checked} style={{ accentColor: 'var(--accent)' }} />
+                      <div>
+                        <span style={{ fontWeight: 500, color: 'var(--ink)' }}>{p.name}</span>
+                        <span style={{ color: 'var(--ink-4)', marginLeft: 8, fontFamily: 'var(--mono)', fontSize: 10 }}>{p.email}</span>
+                      </div>
+                      <span className="chip" style={{ fontSize: 9, padding: '2px 6px' }}>{p.org}</span>
+                    </label>
                   ))}
-                  <span style={{ fontSize:12, color:'var(--ink-3)', padding:'5px 0' }}>+9 more</span>
                 </div>
-                <button style={{ background:'none', border:'none', fontSize:12, color:'var(--accent-ink)', cursor:'pointer', padding:0 }}>+ Add recipients</button>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
+                  <Pill tone="accent">5 selected</Pill>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <span style={{ fontSize: 11, color: 'var(--accent-ink)', cursor: 'pointer' }}>Select all</span>
+                    <span style={{ fontSize: 11, color: 'var(--ink-4)', cursor: 'pointer' }}>Upload CSV</span>
+                    <span style={{ fontSize: 11, color: 'var(--ink-4)', cursor: 'pointer' }}>Paste emails</span>
+                  </div>
+                </div>
               </div>
 
               {/* Email compose */}

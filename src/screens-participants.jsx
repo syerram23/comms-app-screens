@@ -3,183 +3,215 @@
 // ============================================================
 
 function ScreenParticipants() {
-  const people = [
-    ['MR','Maria Rodriguez','RN · 3y',         'Seattle, WA',    'active',     98, '2h',   'enterprise'],
-    ['DP','Devon Park',     'Electrician · 5y','Austin, TX',     'active',     91, '14m',  'smb'],
-    ['AN','Aisha Nabil',    'CDL-A · 2y',      'Newark, NJ',     'pending',    76, '3d',   'starter'],
-    ['LO','Luis Ortega',    'Picker · 1y',     'Fontana, CA',    'active',     88, '32m',  'enterprise'],
-    ['PS','Priya Shah',     'LPN · 4y',        'Chicago, IL',    'offboarded', 94, '14d',  'enterprise'],
-    ['JM','Jordan Miles',   'Ops Lead · 6y',   'Brooklyn, NY',   'active',     84, '1h',   'enterprise'],
-    ['SA','Sana Ahmed',     'CDL-A · 1y',      'Houston, TX',    'active',     72, '4h',   'smb'],
-    ['RK','Ryota Kimura',   'Warehouse · 2y',  'Long Beach, CA', 'active',     81, '22m',  'starter'],
-    ['NB','Nia Brooks',     'RN · 7y',         'Atlanta, GA',    'active',     96, '12m',  'enterprise'],
-    ['MV','Mateo Vargas',   'Electrician · 3y','Phoenix, AZ',    'pending',    68, '2d',   'starter'],
-    ['TL','Tess Lam',       'LPN · 2y',        'San Jose, CA',   'active',     89, '3h',   'enterprise'],
-    ['KO','Kenji Okafor',   'CDL-A · 4y',      'Dallas, TX',     'active',     85, '58m',  'smb'],
+  const [selectedOrg, setSelectedOrg] = useState('all');
+  const [search, setSearch] = useState('');
+  const [showUpload, setShowUpload] = useState(false);
+  const [selectedPeople, setSelectedPeople] = useState([]);
+
+  const orgs = [
+    { id: 'all', name: 'All People', count: 47 },
+    { id: 'harbor', name: 'Harbor Inc.', count: 12, children: [
+      { id: 'harbor-ops', name: 'Operations', count: 8 },
+      { id: 'harbor-fin', name: 'Finance', count: 4 },
+    ]},
+    { id: 'novus', name: 'Novus Staffing LLC', count: 15 },
+    { id: 'summit', name: 'Summit Field Services', count: 8 },
+    { id: 'individual', name: 'Individual', count: 12 },
   ];
-  const [selected, setSelected] = React.useState(3);
-  const w = people[selected];
+
+  const people = [
+    { id: 'p1', name: 'María Ortega', email: 'maria@novusstaffing.co', org: 'Novus Staffing LLC', orgId: 'novus', status: 'Active', lastConvo: 'Onboarding · 2h ago' },
+    { id: 'p2', name: 'Jordan Reyes', email: 'j.reyes@novusstaffing.co', org: 'Novus Staffing LLC', orgId: 'novus', status: 'Pending', lastConvo: 'Onboarding · Not started' },
+    { id: 'p3', name: 'Devin Park', email: 'd.park@harbor.co', org: 'Harbor Inc.', orgId: 'harbor-ops', status: 'Active', lastConvo: 'NPS Survey · 1d ago' },
+    { id: 'p4', name: 'Aisha Bello', email: 'a.bello@harbor.co', org: 'Harbor Inc.', orgId: 'harbor-ops', status: 'Active', lastConvo: 'Onboarding · Complete' },
+    { id: 'p5', name: 'Taylor Nguyen', email: 't.nguyen@summitfield.co', org: 'Summit Field Services', orgId: 'summit', status: 'Active', lastConvo: 'Compliance · 3d ago' },
+    { id: 'p6', name: 'Sam Okonkwo', email: 's.okonkwo@harbor.co', org: 'Harbor Inc.', orgId: 'harbor-fin', status: 'Active', lastConvo: 'Check-in · 5d ago' },
+    { id: 'p7', name: 'Ashley Tran', email: 'a.tran@novusstaffing.co', org: 'Novus Staffing LLC', orgId: 'novus', status: 'Active', lastConvo: 'Onboarding · Partial' },
+    { id: 'p8', name: 'Nina Patel', email: 'n.patel@individual.co', org: 'Individual', orgId: 'individual', status: 'Active', lastConvo: 'Feedback · 1w ago' },
+  ];
+
+  const parentOrgIds = orgs.filter(o => o.children).reduce((acc, o) => {
+    o.children.forEach(c => { acc[c.id] = o.id; });
+    return acc;
+  }, {});
+
+  const filtered = people.filter(p => {
+    const orgMatch = selectedOrg === 'all' || p.orgId === selectedOrg || parentOrgIds[p.orgId] === selectedOrg;
+    const searchMatch = !search || p.name.toLowerCase().includes(search.toLowerCase()) || p.email.toLowerCase().includes(search.toLowerCase());
+    return orgMatch && searchMatch;
+  });
+
+  const togglePerson = (id) => {
+    setSelectedPeople(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+
+  const toggleAll = () => {
+    const allIds = filtered.map(p => p.id);
+    const allSelected = allIds.every(id => selectedPeople.includes(id));
+    if (allSelected) {
+      setSelectedPeople(prev => prev.filter(id => !allIds.includes(id)));
+    } else {
+      setSelectedPeople(prev => [...new Set([...prev, ...allIds])]);
+    }
+  };
 
   return (
-    <AppFrame active="people" screenLabel="05a Participants · List + profile"
-      crumbs={['comms.app','participants','all']}
+    <AppFrame active="people" screenLabel="05a Participants · People"
+      crumbs={['people']}
       topRight={<>
-        <Btn variant="subtle" onClick={() => window.location.href='Segments.html'}>+ Segment</Btn>
-        <Btn variant="subtle">Import</Btn>
-        <Btn variant="primary">+ Participant</Btn>
+        <button className="ghost" onClick={() => setShowUpload(true)} style={{ padding: '8px 14px' }}>Upload CSV</button>
+        <button className="ghost" style={{ padding: '8px 14px' }}>Add person</button>
       </>}>
-      <div style={{ height:'100%', display:'grid', gridTemplateColumns:'420px 1fr', minHeight:0 }}>
-        {/* list column */}
-        <div style={{ borderRight:'1px solid var(--line)', display:'grid', gridTemplateRows:'auto auto 1fr', minHeight:0 }}>
-          <div style={{ padding:'16px 20px', borderBottom:'1px solid var(--line)' }}>
-            <div className="meta" style={{ marginBottom:8 }}>12,492 PARTICIPANTS · 8 REGIONS</div>
-            <div style={{
-              border:'1px solid var(--line)', borderRadius:8,
-              padding:'8px 12px', background:'var(--bg-elev)',
-              fontFamily:'var(--mono)', fontSize:12.5, color:'var(--ink-2)',
-            }}>
-              ⌕ <span style={{ color:'var(--accent-ink)' }}>cert:expiring&lt;30d</span> AND zone:west
-            </div>
-          </div>
-
-          {/* segments chips */}
-          <div style={{ padding:'10px 20px', borderBottom:'1px solid var(--line)', display:'flex', gap:6, flexWrap:'wrap' }}>
-            <span className="meta" style={{ alignSelf:'center', marginRight:6 }}>SEGMENTS</span>
-            {['All','Active · 8,914','Enterprise · 412','Expiring 30d · 62','Offboarded · 88'].map((s, i) => (
-              <button key={s} style={{
-                padding:'4px 10px', borderRadius:999, fontSize:11, fontFamily:'var(--mono)',
-                background: i===0?'var(--ink)':'var(--bg-elev)',
-                color: i===0?'var(--bg)':'var(--ink-2)',
-                border:'1px solid ' + (i===0?'var(--ink)':'var(--line)'),
-              }}>{s}</button>
-            ))}
-          </div>
-
-          <div style={{ overflow:'auto' }}>
-            {people.map((p, i) => (
-              <button key={i} onClick={()=>setSelected(i)} onDoubleClick={()=>window.location.href='Participant Detail.html'} style={{
-                width:'100%', textAlign:'left',
-                display:'grid', gridTemplateColumns:'36px 1fr auto', gap:12,
-                padding:'12px 18px', border:0,
-                background: selected===i?'var(--chip)':'transparent',
-                borderLeft: selected===i?'2px solid var(--accent)':'2px solid transparent',
-                borderBottom:'1px solid var(--line)', cursor:'pointer',
+      <div style={{ height: '100%', display: 'grid', gridTemplateColumns: '240px 1fr', minHeight: 0 }}>
+        {/* Left column — Org tree */}
+        <div style={{ borderRight: '1px solid var(--line)', padding: 16, background: 'var(--bg)', overflowY: 'auto' }}>
+          <div className="meta" style={{ marginBottom: 10 }}>ORGANIZATIONS</div>
+          {orgs.map(org => (
+            <div key={org.id}>
+              <div onClick={() => setSelectedOrg(org.id)} style={{
+                padding: '8px 12px', borderRadius: 8, cursor: 'pointer', fontSize: 13,
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                background: selectedOrg === org.id ? 'var(--accent-soft)' : 'transparent',
+                borderLeft: selectedOrg === org.id ? '3px solid var(--accent)' : '3px solid transparent',
+                fontWeight: selectedOrg === org.id ? 500 : 400,
+                color: selectedOrg === org.id ? 'var(--ink)' : 'var(--ink-2)',
               }}>
-                <div style={{ width:36, height:36, borderRadius:10, background:'var(--ink)', color:'var(--bg)', display:'grid', placeItems:'center', fontSize:12, fontFamily:'var(--mono)' }}>{p[0]}</div>
-                <div style={{ minWidth:0 }}>
-                  <div style={{ fontSize:13.5, fontWeight:500, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{p[1]}</div>
-                  <div className="meta">{p[2]} · {p[3]}</div>
+                <span>{org.name}</span>
+                <span className="meta" style={{ fontSize: 10 }}>{org.count}</span>
+              </div>
+              {org.children && org.children.map(child => (
+                <div key={child.id} onClick={() => setSelectedOrg(child.id)} style={{
+                  padding: '6px 12px 6px 32px', cursor: 'pointer', fontSize: 12,
+                  display: 'flex', justifyContent: 'space-between',
+                  background: selectedOrg === child.id ? 'var(--accent-soft)' : 'transparent',
+                  borderLeft: selectedOrg === child.id ? '3px solid var(--accent)' : '3px solid transparent',
+                  color: selectedOrg === child.id ? 'var(--ink)' : 'var(--ink-3)',
+                }}>
+                  <span>{child.name}</span>
+                  <span className="meta" style={{ fontSize: 10 }}>{child.count}</span>
                 </div>
-                <div style={{ textAlign:'right' }}>
-                  <div style={{ fontSize:11, fontFamily:'var(--mono)', color: p[4]==='active'?'var(--accent-ink)':p[4]==='pending'?'oklch(0.38 0.14 60)':'var(--ink-3)' }}>● {p[4].toUpperCase()}</div>
-                  <div className="meta">{p[6]}</div>
-                </div>
-              </button>
-            ))}
-          </div>
+              ))}
+            </div>
+          ))}
         </div>
 
-        {/* profile column */}
-        <div style={{ overflow:'auto' }}>
-          <div style={{ padding:'28px 32px', borderBottom:'1px solid var(--line)' }}>
-            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
-              <div style={{ display:'flex', gap:16 }}>
-                <div style={{ width:64, height:64, borderRadius:14, background:'var(--ink)', color:'var(--bg)', display:'grid', placeItems:'center', fontSize:20, fontFamily:'var(--mono)', fontWeight:500 }}>{w[0]}</div>
-                <div>
-                  <div style={{ fontSize:24, fontWeight:500, letterSpacing:'-0.01em' }}>{w[1]}</div>
-                  <div className="meta" style={{ marginTop:6 }}>{w[2].toUpperCase()} · {w[3].toUpperCase()}</div>
-                  <div style={{ marginTop:10, display:'flex', gap:6, flexWrap:'wrap' }}>
-                    <Pill tone="accent">● {w[4].toUpperCase()}</Pill>
-                    <span className="chip">{w[7].toUpperCase()}</span>
-                    <span className="chip">RN</span>
-                    <span className="chip">BLS</span>
-                    <Pill tone="warn">ACLS · EXPIRES 30D</Pill>
-                  </div>
-                </div>
-              </div>
-              <div style={{ display:'flex', gap:8 }}>
-                <Btn variant="ghost" onClick={() => window.location.href='Builder.html'}>Message</Btn>
-                <Btn variant="primary" onClick={() => window.location.href='Builder.html'}>Start conversation</Btn>
-              </div>
-            </div>
+        {/* Right column — People table */}
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--line)' }}>
+            <input placeholder="Search people..." value={search} onChange={e => setSearch(e.target.value)} style={{
+              width: '100%', padding: 10, border: '1px solid var(--line)', borderRadius: 10,
+              fontSize: 13, fontFamily: 'var(--sans)', background: 'var(--bg)', color: 'var(--ink)',
+              boxSizing: 'border-box',
+            }} />
+          </div>
+          <div style={{ flex: 1, overflowY: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                  <th style={{ padding: '10px 14px', textAlign: 'left', width: 32 }}>
+                    <input type="checkbox" onChange={toggleAll}
+                      checked={filtered.length > 0 && filtered.every(p => selectedPeople.includes(p.id))}
+                      style={{ accentColor: 'var(--accent)' }} />
+                  </th>
+                  <th className="meta" style={{ padding: '10px 14px', textAlign: 'left' }}>NAME</th>
+                  <th className="meta" style={{ padding: '10px 14px', textAlign: 'left' }}>EMAIL</th>
+                  <th className="meta" style={{ padding: '10px 14px', textAlign: 'left' }}>ORGANIZATION</th>
+                  <th className="meta" style={{ padding: '10px 14px', textAlign: 'left' }}>LAST CONVERSATION</th>
+                  <th className="meta" style={{ padding: '10px 14px', textAlign: 'left' }}>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map(p => (
+                  <tr key={p.id} style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '10px 14px' }}>
+                      <input type="checkbox" checked={selectedPeople.includes(p.id)}
+                        onChange={() => togglePerson(p.id)} style={{ accentColor: 'var(--accent)' }} />
+                    </td>
+                    <td style={{ padding: '10px 14px' }}>
+                      <a href="Participant Detail.html" style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink)', textDecoration: 'none', cursor: 'pointer' }}>{p.name}</a>
+                    </td>
+                    <td style={{ padding: '10px 14px', fontSize: 13, color: 'var(--ink-3)', fontFamily: 'var(--mono)' }}>{p.email}</td>
+                    <td style={{ padding: '10px 14px' }}>
+                      <span className="chip" style={{ fontSize: 12 }}>{p.org}</span>
+                    </td>
+                    <td style={{ padding: '10px 14px', fontSize: 12, color: 'var(--ink-3)' }}>{p.lastConvo}</td>
+                    <td style={{ padding: '10px 14px' }}>
+                      <Pill tone={p.status === 'Active' ? 'accent' : 'neutral'}>{p.status}</Pill>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
-          {/* stat grid */}
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', borderBottom:'1px solid var(--line)' }}>
-            {[
-              ['Response rate', '98%', 'over 47 convos'],
-              ['Sentiment',     '+86', 'positive'],
-              ['Preferred',     'SMS', 'voice as fallback'],
-              ['Avg completion','1m 42s', 'top decile'],
-            ].map(([k, v, s], i) => (
-              <div key={i} style={{ padding:'18px 24px', borderLeft: i?'1px solid var(--line)':'none' }}>
-                <div className="meta">{k.toUpperCase()}</div>
-                <div style={{ fontSize:24, fontWeight:500, letterSpacing:'-0.02em', marginTop:6 }}>{v}</div>
-                <div className="meta" style={{ marginTop:2 }}>{s}</div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ display:'grid', gridTemplateColumns:'1.4fr 1fr', minHeight:340 }}>
-            {/* timeline */}
-            <div style={{ padding:'24px 32px', borderRight:'1px solid var(--line)' }}>
-              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline' }}>
-                <span className="meta">TIMELINE · LAST 30 DAYS</span>
-                <span className="meta">47 CONVERSATIONS</span>
-              </div>
-              <div style={{ marginTop:14, display:'flex', flexDirection:'column', gap:0 }}>
-                {[
-                  ['2h', 'Completed', 'Safety check survey · 92% clarity', 'accent'],
-                  ['1d', 'Reminder sent', 'ACLS renewal · SMS', ''],
-                  ['4d', 'Conversation', 'Shift-swap request · resolved', ''],
-                  ['9d', 'Training', 'Sharps protocol · passed 9/10', 'accent'],
-                  ['14d', 'Onboarding', 'W-9, BLS, NDA received', ''],
-                  ['22d', 'Acknowledgment', 'Q2 policy update · signed', 'accent'],
-                ].map(([t, k, d, a], i) => (
-                  <div key={i} style={{ display:'grid', gridTemplateColumns:'48px 140px 1fr', padding:'10px 0', borderBottom:'1px solid var(--line)', gap:14, alignItems:'center' }}>
-                    <span className="meta">{t}</span>
-                    <span style={{ fontSize:12, fontFamily:'var(--mono)', color: a==='accent'?'var(--accent-ink)':'var(--ink-2)' }}>● {k.toUpperCase()}</span>
-                    <span style={{ fontSize:13, color:'var(--ink-2)' }}>{d}</span>
-                  </div>
-                ))}
-              </div>
+          {/* Selected bottom bar */}
+          {selectedPeople.length > 0 && (
+            <div style={{
+              padding: '10px 16px', borderTop: '1px solid var(--line)', background: 'var(--bg-elev)',
+              display: 'flex', alignItems: 'center', gap: 12, fontSize: 13,
+            }}>
+              <span style={{ fontWeight: 500 }}>{selectedPeople.length} selected</span>
+              <span style={{ color: 'var(--ink-4)' }}>&middot;</span>
+              <a href="Send.html" style={{ color: 'var(--accent-ink)', textDecoration: 'none', fontWeight: 500 }}>Send conversation &rarr;</a>
+              <span style={{ color: 'var(--ink-4)' }}>|</span>
+              <span style={{ color: 'var(--ink-3)', cursor: 'pointer' }}>Remove from list</span>
             </div>
-
-            {/* attributes */}
-            <div style={{ padding:'24px 32px' }}>
-              <div className="meta" style={{ marginBottom:10 }}>ATTRIBUTES</div>
-              <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:20 }}>
-                {[
-                  ['Preferred channel','SMS → Voice escalation'],
-                  ['Language','English, Spanish'],
-                  ['Contact window','8a–6p PT, weekdays'],
-                  ['Tier','Enterprise · 3y tenure'],
-                  ['Manager','Jordan Miles'],
-                ].map(([k, v]) => (
-                  <div key={k} style={{ display:'grid', gridTemplateColumns:'120px 1fr', fontSize:13 }}>
-                    <span className="meta">{k.toUpperCase()}</span>
-                    <span style={{ color:'var(--ink-2)' }}>{v}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="meta" style={{ marginBottom:8 }}>CREDENTIALS</div>
-              <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
-                {[
-                  ['RN · Licensed',   'FULL',   'var(--accent-ink)'],
-                  ['BLS · CPR',       'FULL',   'var(--accent-ink)'],
-                  ['ACLS',            '30D',    'oklch(0.40 0.14 60)'],
-                  ['I-9 · on file',   'FULL',   'var(--accent-ink)'],
-                ].map(([k, s, c], i) => (
-                  <div key={i} style={{ display:'grid', gridTemplateColumns:'1fr auto', padding:'6px 0', borderBottom:'1px dashed var(--line)', fontSize:12.5 }}>
-                    <span>{k}</span>
-                    <span className="meta" style={{ color: c }}>● {s}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
+
+      {/* CSV Upload Modal */}
+      {showUpload && (
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(14,14,12,0.5)', display: 'grid', placeItems: 'center', zIndex: 1000 }}>
+          <div style={{ width: 520, background: 'var(--bg-elev)', borderRadius: 16, padding: 28, boxShadow: '0 24px 60px rgba(0,0,0,0.2)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <div style={{ fontSize: 18, fontWeight: 600 }}>Import people</div>
+              <button onClick={() => setShowUpload(false)} style={{ background: 'none', border: 'none', fontSize: 18, color: 'var(--ink-3)', cursor: 'pointer' }}>{'\u00D7'}</button>
+            </div>
+
+            <div className="meta" style={{ marginBottom: 8 }}>STEP 1 {'\u00B7'} DOWNLOAD TEMPLATE</div>
+            <p style={{ fontSize: 13, color: 'var(--ink-3)', marginBottom: 8 }}>Your CSV should have these columns:</p>
+            <div style={{ border: '1px solid var(--line)', borderRadius: 8, overflow: 'hidden', marginBottom: 16 }}>
+              <table style={{ width: '100%', fontSize: 11, fontFamily: 'var(--mono)', borderCollapse: 'collapse' }}>
+                <tr style={{ background: 'var(--chip)' }}>
+                  <th style={{ padding: '6px 10px', textAlign: 'left', borderRight: '1px solid var(--line)' }}>first_name</th>
+                  <th style={{ padding: '6px 10px', textAlign: 'left', borderRight: '1px solid var(--line)' }}>last_name</th>
+                  <th style={{ padding: '6px 10px', textAlign: 'left', borderRight: '1px solid var(--line)' }}>email</th>
+                  <th style={{ padding: '6px 10px', textAlign: 'left', borderRight: '1px solid var(--line)' }}>phone</th>
+                  <th style={{ padding: '6px 10px', textAlign: 'left', borderRight: '1px solid var(--line)' }}>organization</th>
+                  <th style={{ padding: '6px 10px', textAlign: 'left' }}>tags</th>
+                </tr>
+                <tr>
+                  <td style={{ padding: '6px 10px', color: 'var(--ink-3)', borderRight: '1px solid var(--line)' }}>Mar{'\u00ED'}a</td>
+                  <td style={{ padding: '6px 10px', color: 'var(--ink-3)', borderRight: '1px solid var(--line)' }}>Ortega</td>
+                  <td style={{ padding: '6px 10px', color: 'var(--ink-3)', borderRight: '1px solid var(--line)' }}>maria@co.com</td>
+                  <td style={{ padding: '6px 10px', color: 'var(--ink-3)', borderRight: '1px solid var(--line)' }}>+1 312...</td>
+                  <td style={{ padding: '6px 10px', color: 'var(--ink-3)', borderRight: '1px solid var(--line)' }}>Novus</td>
+                  <td style={{ padding: '6px 10px', color: 'var(--ink-3)' }}>vendor</td>
+                </tr>
+              </table>
+            </div>
+            <a style={{ fontSize: 12, color: 'var(--accent-ink)' }}>Download CSV template {'\u2192'}</a>
+
+            <div className="meta" style={{ marginTop: 20, marginBottom: 8 }}>STEP 2 {'\u00B7'} UPLOAD YOUR FILE</div>
+            <div style={{ border: '2px dashed var(--line)', borderRadius: 12, padding: 32, textAlign: 'center', marginBottom: 16 }}>
+              <div style={{ fontSize: 24, color: 'var(--ink-4)', marginBottom: 8 }}>{'\u2191'}</div>
+              <div style={{ fontSize: 13, color: 'var(--ink-3)' }}>Drop your CSV here or click to browse</div>
+              <div style={{ fontSize: 11, color: 'var(--ink-4)', marginTop: 4 }}>CSV files up to 10MB</div>
+            </div>
+
+            <div className="meta" style={{ marginBottom: 8 }}>PREVIEW</div>
+            <div style={{ background: 'var(--accent-soft)', borderRadius: 8, padding: 12, fontSize: 13, color: 'var(--accent-ink)', marginBottom: 16 }}>
+              47 people found {'\u00B7'} 3 organizations detected {'\u00B7'} 0 duplicates
+            </div>
+
+            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+              <button onClick={() => setShowUpload(false)} className="ghost" style={{ padding: '8px 16px' }}>Cancel</button>
+              <button onClick={() => setShowUpload(false)} className="primary" style={{ padding: '8px 16px' }}>Import 47 people</button>
+            </div>
+          </div>
+        </div>
+      )}
     </AppFrame>
   );
 }
