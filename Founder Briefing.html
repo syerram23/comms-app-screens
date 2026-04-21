@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Comms · Product Briefing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+  :root { --bg:#faf8f5; --ink:#0e0e0c; --ink2:#2a2a27; --ink3:#575751; --ink4:#8a8a82; --line:#e7e3db; --chip:#f0ece3; --accent:oklch(0.62 0.17 148); --accent-soft:oklch(0.94 0.06 148); --accent-ink:oklch(0.32 0.12 148); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter Tight', system-ui, sans-serif; background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent-ink); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+  .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink3); letter-spacing: 0.04em; }
+  .serif { font-family: 'Instrument Serif', serif; font-style: italic; }
+  h1 { font-size: 36px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 16px; }
+  h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin: 48px 0 16px; padding-top: 32px; border-top: 1px solid var(--line); }
+  h3 { font-size: 16px; font-weight: 600; margin: 24px 0 8px; }
+  p { color: var(--ink2); margin-bottom: 12px; max-width: 680px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 12px; }
+  .card-accent { background: var(--accent-soft); border-color: var(--accent); }
+  .link-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .link-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font-size: 13px; }
+  .link-item:hover { border-color: var(--accent); }
+  .link-item .label { font-weight: 500; }
+  .link-item .url { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink4); }
+  .badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 4px; margin-right: 6px; }
+  .badge-new { background: var(--accent-soft); color: var(--accent-ink); }
+  .badge-core { background: var(--chip); color: var(--ink3); }
+  .badge-ref { background: #fff; border: 1px solid var(--line); color: var(--ink4); }
+  .decision { background: var(--chip); border-radius: 8px; padding: 14px 16px; margin: 12px 0; font-size: 13px; color: var(--ink2); }
+  .decision strong { color: var(--ink); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th { text-align: left; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--ink3); border-bottom: 1px solid var(--line); }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  td a { font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="container" style="padding-top:48px; padding-bottom:80px;">
+
+  <div class="meta" style="margin-bottom:12px;">COMMS · PRODUCT BRIEFING · APRIL 2026</div>
+  <h1>Product Architecture <span class="serif" style="color:var(--ink3)">& Screen Guide</span></h1>
+  <p>This document covers three versions of the Comms application, the design decisions behind each, and every screen URL. Use it to review flows, identify gaps, and plan next steps.</p>
+  <p><a href="Branding.html">View the Design System & Branding Guide →</a></p>
+
+  <!-- ═══════ MAGIC V1 ═══════ -->
+  <h2><span class="badge badge-new">NEW</span> Magic V1 — The 30-Second App</h2>
+  <p>The fastest path from idea to sent conversation. Three sidebar items. Voice-first builder. AI-generated results. Designed for someone who wants to send a conversation in under 30 seconds without learning an enterprise tool.</p>
+
+  <div class="decision"><strong>Why this exists:</strong> Enterprise buyers need to see the full platform. But the first-time experience should be magical — speak for 20 seconds, review what Comms built, hit send. Magic V1 is that experience. It's also the version we can demo in a sales call without overwhelming the buyer.</div>
+
+  <h3>Product Flow</h3>
+  <p>Builder (voice conversation with AI → auto-generated flow → edit → share/send) → Conversations (list + AI-generated results with summaries, action items, themes, individual responses) → People (participant directory with detail panels)</p>
+
+  <h3>Admin Screens</h3>
+  <div class="link-grid">
+    <a class="link-item" href="Magic Builder.html"><span class="label">Builder (voice-first)</span><span class="url">Magic Builder.html</span></a>
+    <a class="link-item" href="Magic Conversations.html"><span class="label">Conversations + Results</span><span class="url">Magic Conversations.html</span></a>
+    <a class="link-item" href="Magic People.html"><span class="label">People directory</span><span class="url">Magic People.html</span></a>
+  </div>
+
+  <h3>Participant Screens</h3>
+  <div class="link-grid">
+    <a class="link-item" href="Magic Participant.html"><span class="label">Voice conversation (participant)</span><span class="url">Magic Participant.html</span></a>
+  </div>
+
+  <h3>Key Features</h3>
+  <div class="card">
+    <strong>Voice-first builder</strong> — The admin has a back-and-forth voice conversation with Comms AI. Comms asks clarifying questions ("What documents do you need? How many follow-ups?") and builds the full conversation flow. No forms, no blocks, no configuration screens.
+  </div>
+  <div class="card">
+    <strong>AI-generated results</strong> — When participants complete, the Conversations screen shows a rich AI summary: natural language paragraph, stat cards (completion rate, avg time, validation rate), suggested action items (as checkboxes), key themes (metric bars), and individual response cards with expandable details.
+  </div>
+  <div class="card">
+    <strong>Participant voice experience</strong> — The participant clicks a link, lands on a branded page, and has a voice conversation with an AI agent. No forms, no uploads (in Magic V1) — just a natural back-and-forth voice conversation. Dark immersive design with animated waveforms.
+  </div>
+
+  <div class="decision"><strong>What's NOT in Magic V1:</strong> No templates library, no search/query, no settings, no integrations, no document upload in participant view. These are all in Enterprise. Magic V1 is intentionally stripped to prove the core loop works.</div>
+
+  <!-- ═══════ ENTERPRISE ═══════ -->
+  <h2><span class="badge badge-core">CORE</span> Enterprise — Full Application</h2>
+  <p>The production application with full sidebar navigation, campaigns, people directory, templates, natural language search, settings, and rich participant experiences (voice, video, documents, forms, e-signatures, presentations).</p>
+
+  <div class="decision"><strong>Why this exists:</strong> This is the product we sell to enterprise buyers. It handles the full lifecycle: build conversations (voice-first or from templates), send via email or link, track campaigns, search across all conversations with natural language, manage participants, and configure integrations. The participant experience supports every modality.</div>
+
+  <h3>Product Flow</h3>
+  <p>Sign Up → Onboarding (5 steps incl. template selection) → Home (conversational dashboard) → Builder (voice setup → edit → preview → send) → Campaigns (list → detail with AI summary → conversation replay) → People (directory → detail) → Search (NL query) → Templates → Settings</p>
+
+  <h3>Admin Screens</h3>
+  <table>
+    <tr><th>SCREEN</th><th>URL</th><th>WHAT IT DOES</th></tr>
+    <tr><td><a href="Home.html">Home</a></td><td class="meta">Home.html</td><td>Conversational dashboard — greeting, attention items, quick actions, activity feed</td></tr>
+    <tr><td><a href="Builder.html">Builder</a></td><td class="meta">Builder.html</td><td>Voice-first conversation builder — 3 states: voice setup → edit/preview → share/send</td></tr>
+    <tr><td><a href="Preview.html">Preview</a></td><td class="meta">Preview.html</td><td>3-column live session preview — transcript + documents + insights (matches marketing homepage)</td></tr>
+    <tr><td><a href="Send.html">Send</a></td><td class="meta">Send.html</td><td>Email compose + shareable link delivery with follow-up configuration</td></tr>
+    <tr><td><a href="Campaigns.html">Campaigns</a></td><td class="meta">Campaigns.html</td><td>All sent conversations — status, completion rates, row click → detail</td></tr>
+    <tr><td><a href="Campaign Detail.html">Campaign Detail</a></td><td class="meta">Campaign Detail.html</td><td>AI summary card + participant list + NL query input. Click participant → Conversation Replay</td></tr>
+    <tr><td><a href="Conversation Replay.html">Conversation Replay</a></td><td class="meta">Conversation Replay.html</td><td>Full transcript replay — dark card with 8 messages, voice scrubber, document validation badges, extracted data, session summary</td></tr>
+    <tr><td><a href="Participants.html">People</a></td><td class="meta">Participants.html</td><td>Participant directory with search + segments</td></tr>
+    <tr><td><a href="Participant Detail.html">Participant Detail</a></td><td class="meta">Participant Detail.html</td><td>Person record — profile, conversation timeline, documents, compliance, quick actions</td></tr>
+    <tr><td><a href="Search.html">Search</a></td><td class="meta">Search.html</td><td>Natural language search across all conversations and documents</td></tr>
+    <tr><td><a href="Templates.html">Templates</a></td><td class="meta">Templates.html</td><td>Saved conversation templates</td></tr>
+    <tr><td><a href="Template Detail.html">Template Detail</a></td><td class="meta">Template Detail.html</td><td>Template configuration and "Use this template" flow</td></tr>
+    <tr><td><a href="Settings Profile.html">Settings</a></td><td class="meta">Settings *.html</td><td>6 pages: Profile, Team, Billing, Integrations, API, Audit</td></tr>
+    <tr><td><a href="Onboarding.html">Onboarding</a></td><td class="meta">Onboarding.html</td><td>5-step first-run: account → workspace → use cases → template → invite</td></tr>
+    <tr><td><a href="Sign Up.html">Sign Up</a></td><td class="meta">Sign Up.html</td><td>Account creation with SSO</td></tr>
+    <tr><td><a href="Log In.html">Log In</a></td><td class="meta">Log In.html</td><td>Login with password or SSO</td></tr>
+  </table>
+
+  <h3>Participant Screens</h3>
+  <table>
+    <tr><th>SCREEN</th><th>URL</th><th>WHAT IT DOES</th></tr>
+    <tr><td><a href="Participant Landing.html">Landing</a></td><td class="meta">Participant Landing.html</td><td>Frosted glass invitation — company logo, what to prepare, time estimate, "Start" CTA</td></tr>
+    <tr><td><a href="Participant Conversation.html">Conversation</a></td><td class="meta">Participant Conversation.html</td><td>Dark immersive multi-modal — voice waveforms, document upload, AI agent avatar with glow</td></tr>
+    <tr><td><a href="Participant Complete.html">Complete</a></td><td class="meta">Participant Complete.html</td><td>Completion confirmation with summary of submitted items</td></tr>
+    <tr><td><a href="Try It.html">Try It (all modalities)</a></td><td class="meta">Try It.html</td><td>8-step interactive demo: voice, video, video walkthrough, document review, forms, upload, info sharing, scheduling</td></tr>
+  </table>
+
+  <h3>Key Features & Decisions</h3>
+  <div class="card">
+    <strong>Voice-first builder (same as Magic, but with more options)</strong> — Template shortcuts, AI prompt, back-and-forth voice conversation. The enterprise version adds: templates library, advanced editor link, more delivery options.
+  </div>
+  <div class="card">
+    <strong>Delivery: Email + Link only</strong> — No SMS, no phone calls. Branded email with configurable follow-ups (1-5 reminders) or a shareable link. This was a deliberate simplification from the original design which included SMS/phone.
+  </div>
+  <div class="card">
+    <strong>Tour guide on first visit</strong> — 6-step interactive overlay highlighting Builder, Steps, AI Assist, Preview, Campaigns, Search. Stores completion in localStorage so it only shows once.
+  </div>
+  <div class="card">
+    <strong>Friendlier labels for non-technical users</strong> — "Ask a question" instead of "Voice modality", "Collect a document" instead of "Document Upload", "Automatic checks" instead of "Validation rules". Designed for HR/People Ops buyers.
+  </div>
+
+  <!-- ═══════ V2 REFERENCE ═══════ -->
+  <h2><span class="badge badge-ref">REF</span> V2 Reference Library — Future Screens</h2>
+  <p>All screens from the full original build that aren't in the current Enterprise MVP. Kept as reference for future development. These include advanced builder variants, live session modalities, detailed participant email/link flows, and error states.</p>
+
+  <div class="decision"><strong>Why these were removed from the MVP:</strong> The Enterprise app was simplified to focus on the core loop (Build → Send → Review). These screens represent features that will be added back as the product matures — live voice/video sessions, advanced flow editors, detailed participant journeys, etc.</div>
+
+  <h3>Builder Variants (advanced)</h3>
+  <div class="link-grid">
+    <a class="link-item" href="Flow Editor.html"><span class="label">Flow Editor (drag-and-drop)</span><span class="url">Flow Editor.html</span></a>
+    <a class="link-item" href="Session Wizard.html"><span class="label">Session Wizard (step-by-step)</span><span class="url">Session Wizard.html</span></a>
+    <a class="link-item" href="Builder Chat.html"><span class="label">Builder Chat (AI co-pilot)</span><span class="url">Builder Chat.html</span></a>
+    <a class="link-item" href="Builder Edit Step.html"><span class="label">Builder Edit Step (detail)</span><span class="url">Builder Edit Step.html</span></a>
+    <a class="link-item" href="Dispatch.html"><span class="label">Dispatch (old send)</span><span class="url">Dispatch.html</span></a>
+  </div>
+
+  <h3>Live Session Modalities</h3>
+  <div class="link-grid">
+    <a class="link-item" href="Live Voice.html"><span class="label">Live Voice</span><span class="url">Live Voice.html</span></a>
+    <a class="link-item" href="Live Video.html"><span class="label">Live Video</span><span class="url">Live Video.html</span></a>
+    <a class="link-item" href="Live Form.html"><span class="label">Live Form</span><span class="url">Live Form.html</span></a>
+    <a class="link-item" href="Live Screen Share.html"><span class="label">Live Screen Share</span><span class="url">Live Screen Share.html</span></a>
+    <a class="link-item" href="Live Present Doc.html"><span class="label">Live Present Doc</span><span class="url">Live Present Doc.html</span></a>
+    <a class="link-item" href="Live Present Video.html"><span class="label">Live Present Video</span><span class="url">Live Present Video.html</span></a>
+  </div>
+
+  <h3>Participant Email Flow (P10a-h)</h3>
+  <div class="link-grid">
+    <a class="link-item" href="P10a Inbox.html"><span class="label">Inbox</span><span class="url">P10a</span></a>
+    <a class="link-item" href="P10b Email.html"><span class="label">Email</span><span class="url">P10b</span></a>
+    <a class="link-item" href="P10c Landing.html"><span class="label">Landing</span><span class="url">P10c</span></a>
+    <a class="link-item" href="P10d Consent.html"><span class="label">Consent</span><span class="url">P10d</span></a>
+    <a class="link-item" href="P10e Device Check.html"><span class="label">Device Check</span><span class="url">P10e</span></a>
+    <a class="link-item" href="P10f Voice.html"><span class="label">Voice</span><span class="url">P10f</span></a>
+    <a class="link-item" href="P10g Video.html"><span class="label">Video</span><span class="url">P10g</span></a>
+    <a class="link-item" href="P10h Thanks.html"><span class="label">Thanks</span><span class="url">P10h</span></a>
+  </div>
+
+  <h3>Participant Link Flow (P11a-f)</h3>
+  <div class="link-grid">
+    <a class="link-item" href="P11a Link Landing.html"><span class="label">Link Landing</span><span class="url">P11a</span></a>
+    <a class="link-item" href="P11b Gate.html"><span class="label">Gate</span><span class="url">P11b</span></a>
+    <a class="link-item" href="P11c Agenda Intro.html"><span class="label">Agenda Intro</span><span class="url">P11c</span></a>
+    <a class="link-item" href="P11d Agenda Video.html"><span class="label">Agenda Video</span><span class="url">P11d</span></a>
+    <a class="link-item" href="P11e Agenda Form.html"><span class="label">Agenda Form</span><span class="url">P11e</span></a>
+    <a class="link-item" href="P11f Builder View.html"><span class="label">Builder View</span><span class="url">P11f</span></a>
+  </div>
+
+  <h3>Other Reference Screens</h3>
+  <div class="link-grid">
+    <a class="link-item" href="Analytics.html"><span class="label">Analytics Dashboard</span><span class="url">Analytics.html</span></a>
+    <a class="link-item" href="Notifications.html"><span class="label">Notifications</span><span class="url">Notifications.html</span></a>
+    <a class="link-item" href="Segments.html"><span class="label">Segments</span><span class="url">Segments.html</span></a>
+    <a class="link-item" href="Conversation Detail.html"><span class="label">Conversation Detail (old)</span><span class="url">Conversation Detail.html</span></a>
+    <a class="link-item" href="404.html"><span class="label">404</span><span class="url">404.html</span></a>
+    <a class="link-item" href="Offline.html"><span class="label">Offline</span><span class="url">Offline.html</span></a>
+    <a class="link-item" href="Permission Denied.html"><span class="label">Permission Denied</span><span class="url">Permission Denied.html</span></a>
+    <a class="link-item" href="Rate Limit.html"><span class="label">Rate Limit</span><span class="url">Rate Limit.html</span></a>
+    <a class="link-item" href="Upgrade Required.html"><span class="label">Upgrade Required</span><span class="url">Upgrade Required.html</span></a>
+    <a class="link-item" href="Empty Workspace.html"><span class="label">Empty Workspace</span><span class="url">Empty Workspace.html</span></a>
+    <a class="link-item" href="Invite Accept.html"><span class="label">Invite Accept</span><span class="url">Invite Accept.html</span></a>
+    <a class="link-item" href="Magic Link.html"><span class="label">Magic Link</span><span class="url">Magic Link.html</span></a>
+  </div>
+
+  <!-- ═══════ OTHER ═══════ -->
+  <h2>Other Resources</h2>
+
+  <div class="link-grid">
+    <a class="link-item" href="Branding.html"><span class="label">Design System & Branding Guide</span><span class="url">Branding.html</span></a>
+    <a class="link-item" href="Lifecycle.html"><span class="label">End-to-End Lifecycle (12 steps)</span><span class="url">Lifecycle.html</span></a>
+    <a class="link-item" href="Try It.html"><span class="label">Try It — All 8 Modalities</span><span class="url">Try It.html</span></a>
+    <a class="link-item" href="Team Walkthrough.html"><span class="label">Team Walkthrough</span><span class="url">Team Walkthrough.html</span></a>
+    <a class="link-item" href="index.html"><span class="label">Screens Index (all versions)</span><span class="url">index.html</span></a>
+  </div>
+
+  <!-- ═══════ TOTAL COUNT ═══════ -->
+  <h2>Build Summary</h2>
+  <div class="card">
+    <table>
+      <tr><th>METRIC</th><th>COUNT</th></tr>
+      <tr><td>Total HTML pages</td><td><strong>70+</strong></td></tr>
+      <tr><td>JSX component files</td><td><strong>24</strong></td></tr>
+      <tr><td>Magic V1 screens</td><td><strong>4</strong> (Builder, Conversations, People, Participant)</td></tr>
+      <tr><td>Enterprise screens</td><td><strong>20+</strong> (active in MVP flow)</td></tr>
+      <tr><td>V2 reference screens</td><td><strong>30+</strong> (kept for future)</td></tr>
+      <tr><td>Fonts</td><td><strong>3</strong> (Inter Tight, JetBrains Mono, Instrument Serif)</td></tr>
+      <tr><td>Design tokens</td><td><strong>15</strong> CSS custom properties</td></tr>
+      <tr><td>Animations</td><td><strong>7</strong> keyframe animations</td></tr>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

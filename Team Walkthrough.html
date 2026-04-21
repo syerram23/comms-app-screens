@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en" data-mode="light" data-accent="signal">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Comms · Team Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="src/tokens.css"/>
+<style>
+body { background: var(--bg); }
+.page { max-width: 1080px; margin: 0 auto; padding: 72px 56px 120px; }
+.hero h1 { font-family: var(--sans); font-weight: 500; letter-spacing: -0.03em; font-size: 60px; line-height: 1.02; margin: 0; max-width: 16ch; }
+.hero p  { font-size: 17px; color: var(--ink-2); line-height: 1.55; margin-top: 18px; max-width: 62ch; }
+
+.panel-toc {
+  position: sticky; top: 16px; align-self: start;
+  padding: 18px; border: 1px solid var(--line); border-radius: 14px;
+  background: var(--bg-elev);
+}
+.panel-toc h3 { margin: 0 0 8px; font-size: 12px; font-family: var(--mono); letter-spacing: 0.08em; color: var(--ink-3); text-transform: uppercase; }
+.panel-toc a  { display: block; padding: 5px 8px; border-radius: 6px; color: var(--ink-2); font-size: 13px; }
+.panel-toc a:hover { background: var(--chip); color: var(--ink); }
+
+.layout { display: grid; grid-template-columns: 230px 1fr; gap: 56px; margin-top: 64px; align-items: start; }
+
+.chapter { margin-bottom: 80px; }
+.chapter > .eyebrow { margin-bottom: 14px; }
+.chapter > h2 { font-family: var(--sans); font-weight: 500; font-size: 38px; letter-spacing: -0.025em; line-height: 1.1; margin: 0 0 14px; }
+.chapter > h2 .italic-serif { color: var(--ink-3); }
+.chapter > p  { font-size: 15.5px; color: var(--ink-2); line-height: 1.6; max-width: 62ch; margin: 0 0 24px; }
+
+/* Demo script block — the "click this, then this, then this" list */
+.demo {
+  border: 1px solid var(--line); border-radius: 14px; background: var(--bg-elev);
+  overflow: hidden; margin: 22px 0 10px;
+}
+.demo header {
+  padding: 14px 18px; border-bottom: 1px solid var(--line);
+  display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center;
+  background: color-mix(in srgb, var(--chip) 60%, transparent);
+}
+.demo header .tag {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  padding: 4px 8px; border-radius: 4px; background: var(--ink); color: var(--bg);
+}
+.demo header .title { font-size: 15px; font-weight: 500; }
+.demo header .time  { font-family: var(--mono); font-size: 10px; color: var(--ink-3); }
+
+.demo ol { list-style: none; margin: 0; padding: 6px 0; }
+.demo li {
+  display: grid; grid-template-columns: 28px 1fr auto; gap: 14px; align-items: start;
+  padding: 12px 18px; border-bottom: 1px dashed var(--line);
+}
+.demo li:last-child { border-bottom: 0; }
+.demo li .num {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--chip); color: var(--ink);
+  display: grid; place-items: center;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500; margin-top: 1px;
+}
+.demo li .body { min-width: 0; }
+.demo li .body a.screen-link {
+  font-size: 14px; font-weight: 500; color: var(--ink); letter-spacing: -0.005em;
+  border-bottom: 1px solid var(--line-2);
+}
+.demo li .body a.screen-link:hover { border-color: var(--ink); }
+.demo li .body .desc {
+  font-size: 13.5px; color: var(--ink-2); margin-top: 3px; line-height: 1.5;
+}
+.demo li .body .callout {
+  display: inline-block; margin-top: 6px; padding: 4px 8px;
+  background: var(--accent-soft); color: var(--accent-ink);
+  border-radius: 6px; font-family: var(--mono); font-size: 11px;
+}
+.demo li .eta { font-family: var(--mono); font-size: 10.5px; color: var(--ink-3); margin-top: 4px; white-space: nowrap; }
+
+/* Side notes for eng, pm, design */
+.notes {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  margin: 28px 0;
+}
+.note {
+  padding: 16px; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--bg);
+}
+.note .who { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--ink-3); margin-bottom: 8px; }
+.note .who::before { content: "● "; color: var(--accent-ink); }
+.note .title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.note .body  { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+
+/* "Real vs mock" stripe */
+.reality {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  margin: 22px 0;
+}
+.reality > div { padding: 22px; }
+.reality > div + div { border-left: 1px solid var(--line); }
+.reality h4 { margin: 0 0 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.reality ul { list-style: none; margin: 0; padding: 0; }
+.reality li { padding: 7px 0; font-size: 13.5px; color: var(--ink-2); border-bottom: 1px dashed var(--line); display: grid; grid-template-columns: 18px 1fr; gap: 10px; }
+.reality li:last-child { border-bottom: 0; }
+.reality li .mark { font-family: var(--mono); font-size: 12px; color: var(--accent-ink); }
+
+.callout-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+.qs-nav {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-top: 28px;
+}
+.qs-nav a {
+  padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg-elev);
+  font-size: 13px; color: var(--ink);
+}
+.qs-nav a.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="meta" style="margin-bottom:10px">COMMS · APP UI · TEAM WALKTHROUGH</div>
+    <h1>Here's how to read the build. <span class="italic-serif" style="color:var(--ink-3)">Take 15 minutes.</span></h1>
+    <p>This is a hand-drawn walkthrough of the Comms app prototype — what's here, how to poke at it,
+       and the one-screen-at-a-time demo scripts you can run in a stand-up. Every bold blue link below
+       opens a real standalone screen. Come back here after each path.</p>
+
+    <div class="qs-nav">
+      <a class="primary" href="#intro">Start with the overview</a>
+      <a href="Screens Index.html">All 51 screens ↗</a>
+      <a href="Comms App UI.html">Design canvas (everything at once) ↗</a>
+      <a href="README.md">Deploy notes</a>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- SIDEBAR TOC -->
+    <aside class="panel-toc">
+      <h3>In this doc</h3>
+      <a href="#intro">0. What is this?</a>
+      <a href="#operator">1. Operator tour</a>
+      <a href="#builder">2. Builder · chat-first</a>
+      <a href="#participant-email">3. Participant · email link</a>
+      <a href="#participant-link">4. Participant · shared link</a>
+      <a href="#live">5. Live conversation</a>
+      <a href="#settings">6. Admin & settings</a>
+      <a href="#edge">7. Edge cases</a>
+      <a href="#reality">8. Real vs mocked</a>
+      <a href="#ship">9. Before we ship</a>
+    </aside>
+
+    <main>
+
+      <!-- INTRO ========================================================= -->
+      <section class="chapter" id="intro">
+        <span class="eyebrow">0 · START HERE</span>
+        <h2>What you're looking at <span class="italic-serif">&amp; what's inside.</span></h2>
+        <p>
+          Comms is an AI conversation engine — not a chatbot, not a form builder. Operators (our customers)
+          use it to draft, send, and analyze real 8–15 minute conversations with hundreds of participants
+          over voice, SMS, email, video, or a shareable link. Participants never install an app.
+        </p>
+        <p>
+          The prototype ships in two views: the <strong>design canvas</strong> (every screen laid out side-by-side
+          for review) and <strong>51 standalone HTML pages</strong> (one per screen, clickable, deploy-ready).
+          This doc walks you through the second view, in the order it actually gets used.
+        </p>
+
+        <div class="notes">
+          <div class="note"><div class="who">PRODUCT</div><div class="title">Read sections 1–5</div><div class="body">Those are the real user journeys. Sections 6–9 are admin and ops — important, but secondary.</div></div>
+          <div class="note"><div class="who">DESIGN</div><div class="title">Canvas first, then pages</div><div class="body">The <a href="Comms App UI.html">design canvas</a> is a better review surface. Standalone pages are for engineers.</div></div>
+          <div class="note"><div class="who">ENGINEERING</div><div class="title">Skim 1–2, focus on 5 &amp; 8</div><div class="body">Live Conversation is the most load-bearing surface. Real-vs-mocked (§8) tells you what to wire up first.</div></div>
+        </div>
+      </section>
+
+      <!-- 1 · OPERATOR TOUR ============================================= -->
+      <section class="chapter" id="operator">
+        <span class="eyebrow">1 · OPERATOR TOUR · 5 MIN</span>
+        <h2>The shortest end-to-end loop <span class="italic-serif">we have.</span></h2>
+        <p>
+          Pretend you're Ellis at Harbor. You open Comms Monday morning. You want to send an NPS
+          conversation to your enterprise customers by lunch. Click through these seven in order.
+        </p>
+
+        <div class="demo">
+          <header>
+            <span class="tag">DEMO · A</span>
+            <span class="title">Morning loop · Home → Builder → Send</span>
+            <span class="time">~5 min</span>
+          </header>
+          <ol>
+            <li><span class="num">1</span><div class="body">
+              <a class="screen-link" href="Home.html">Home · Dashboard</a>
+              <div class="desc">Your stats at a glance. Live-now shows three sessions in flight. Two drafts waiting. "Customer feedback · Q2" is running.</div>
+              <span class="callout">WATCH FOR · the engagement bars on the three live sessions</span>
+            </div><span class="eta">~30 s</span></li>
+
+            <li><span class="num">2</span><div class="body">
+              <a class="screen-link" href="Builder.html">Builder · New Conversation</a>
+              <div class="desc">Click <em>Builder</em> in the sidebar. You'll land on an empty state with one giant input: "What are you trying to hear back?" Paste a sentence or tap a quick-start chip.</div>
+            </div><span class="eta">~20 s</span></li>
+
+            <li><span class="num">3</span><div class="body">
+              <a class="screen-link" href="Builder Chat.html">Builder · Drafting with AI</a>
+              <div class="desc">After you click <em>Draft for me</em>, you land here. The AI has drafted the whole conversation: audience (30 ops leads), 6 steps with full prompts, plus a live SMS preview on the right. This is the canonical editable draft view.</div>
+              <span class="callout">WATCH FOR · "A quick read on your draft" panel with AI feedback</span>
+            </div><span class="eta">~60 s</span></li>
+
+            <li><span class="num">4</span><div class="body">
+              <a class="screen-link" href="Builder Edit Step.html">Builder · Edit a Step</a>
+              <div class="desc">Click any question card in the previous screen. A focused modal opens with the prompt, answer type, channel override, and an inline AI suggestion for a better phrasing.</div>
+            </div><span class="eta">~45 s</span></li>
+
+            <li><span class="num">5</span><div class="body">
+              <a class="screen-link" href="Preview.html">Builder · Preview &amp; Test</a>
+              <div class="desc">SMS-flavored phone preview on the left, diagnostics on the right. "Projected completion 91%" · two warnings that want your attention · a "call me now" test button.</div>
+            </div><span class="eta">~45 s</span></li>
+
+            <li><span class="num">6</span><div class="body">
+              <a class="screen-link" href="Dispatch.html">Builder · Dispatch</a>
+              <div class="desc">Audience is 1,218 contacts. Channel fallback order, quiet hours, schedule. Billing preview on the right — projected cost $109.44. Big "Send to 1,218 people" button.</div>
+            </div><span class="eta">~30 s</span></li>
+
+            <li><span class="num">7</span><div class="body">
+              <a class="screen-link" href="Campaigns.html">Campaigns · List</a>
+              <div class="desc">After send, campaigns is where you watch it. Bulk-select a few rows to see the bulk-action bar appear. Click a row to see the detail drawer.</div>
+              <span class="callout">TRY · checkbox two campaigns, bulk actions reveal</span>
+            </div><span class="eta">~30 s</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 2 · BUILDER ================================================== -->
+      <section class="chapter" id="builder">
+        <span class="eyebrow">2 · BUILDER · DEEP DIVE</span>
+        <h2>Chat-first, with an escape hatch <span class="italic-serif">for power users.</span></h2>
+        <p>
+          This is the most-iterated surface. The first version was a node-and-wire editor — great for engineers, overwhelming for business users. We rebuilt it so the primary flow is <strong>describe it in plain English, AI drafts, you rewrite what matters</strong>.
+        </p>
+
+        <div class="demo">
+          <header><span class="tag">DEMO · B</span><span class="title">Chat-first path</span><span class="time">~3 min</span></header>
+          <ol>
+            <li><span class="num">1</span><div class="body">
+              <a class="screen-link" href="Builder.html">Builder · empty state</a>
+              <div class="desc">One input, five quick-start chips (NPS · Research · Onboarding · Lead qualifier · Exit interview). Advanced-mode escape hatch top-right.</div>
+            </div><span class="eta">~20 s</span></li>
+            <li><span class="num">2</span><div class="body">
+              <a class="screen-link" href="Builder Chat.html">Builder · drafted flow</a>
+              <div class="desc">The landing after Draft. Audience + 6 editable question cards (full prompts visible) + live SMS preview + AI feedback panel. Bottom dock: "Refine with AI" for natural-language edits.</div>
+            </div><span class="eta">~2 min</span></li>
+            <li><span class="num">3</span><div class="body">
+              <a class="screen-link" href="Builder Edit Step.html">Builder · edit a step</a>
+              <div class="desc">Modal. Prompt, answer type, channel, time budget, retries, signals-to-listen-for, plus an AI "try this phrasing instead" suggestion.</div>
+            </div><span class="eta">~45 s</span></li>
+          </ol>
+        </div>
+
+        <div class="demo">
+          <header><span class="tag">DEMO · C</span><span class="title">Power-user path · node editor</span><span class="time">~2 min</span></header>
+          <ol>
+            <li><span class="num">1</span><div class="body">
+              <a class="screen-link" href="Session Wizard.html">Session Wizard (classic)</a>
+              <div class="desc">Three-step wizard: pick a goal · choose channels · select audience. For teams who prefer forms to chat.</div>
+            </div><span class="eta">~60 s</span></li>
+            <li><span class="num">2</span><div class="body">
+              <a class="screen-link" href="Flow Editor.html">Flow Editor (node-based)</a>
+              <div class="desc">Drag nodes around. SVG edges follow the cursor. Block palette on the left, inspector on the right. This is "Advanced mode" — surfaced via a link in the chat builder.</div>
+              <span class="callout">TRY · grab and drag any node, the wires follow</span>
+            </div><span class="eta">~60 s</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 3 · PARTICIPANT · EMAIL =======================================-->
+      <section class="chapter" id="participant-email">
+        <span class="eyebrow">3 · PARTICIPANT · EMAIL LINK · 4 MIN</span>
+        <h2>The receiver's journey, <span class="italic-serif">end to end.</span></h2>
+        <p>
+          Marta at Clipboard receives an email from Acme Inc. She clicks, does a short consent,
+          picks a modality, and has a real conversation with an AI. Run this demo with a straight face —
+          it's the emotional heart of the pitch.
+        </p>
+
+        <div class="demo">
+          <header><span class="tag">DEMO · D</span><span class="title">Acme invites Marta</span><span class="time">~4 min</span></header>
+          <ol>
+            <li><span class="num">1</span><div class="body">
+              <a class="screen-link" href="P10a Inbox.html">Marta's inbox</a>
+              <div class="desc">Gmail-style. Acme's invite is starred and highlighted among real-feeling clutter (Stripe, LinkedIn, AWS).</div>
+            </div><span class="eta">~15 s</span></li>
+            <li><span class="num">2</span><div class="body">
+              <a class="screen-link" href="P10b Email.html">Email opened</a>
+              <div class="desc">Ayo from Acme. A warm human letter with a co-branded CTA card (black Acme header, "Powered by Comms" footer) and the tracked URL visible.</div>
+              <span class="callout">CLICK · "Start the conversation →" — takes you to the landing page</span>
+            </div><span class="eta">~30 s</span></li>
+            <li><span class="num">3</span><div class="body">
+              <a class="screen-link" href="P10c Landing.html">Landing page</a>
+              <div class="desc">Hosted at <code style="font-family:var(--mono)">comms.ai/c/acme/…</code>, but Acme's brand on top. Pick voice, video, or text. Voice is recommended.</div>
+            </div><span class="eta">~20 s</span></li>
+            <li><span class="num">4</span><div class="body">
+              <a class="screen-link" href="P10d Consent.html">Consent</a>
+              <div class="desc">Four plain-English promises — recording, AI interviewer, stop any time, anonymization.</div>
+            </div><span class="eta">~20 s</span></li>
+            <li><span class="num">5</span><div class="body">
+              <a class="screen-link" href="P10e Device Check.html">Device check</a>
+              <div class="desc">Live mic waveform. Browser permission hint. Connection quality.</div>
+            </div><span class="eta">~15 s</span></li>
+            <li><span class="num">6</span><div class="body">
+              <a class="screen-link" href="P10f Voice.html">Live voice interview</a>
+              <div class="desc">Big glowing AI orb labeled ACME. Transcript streams on the right. The current question is pinned up top.</div>
+            </div><span class="eta">~90 s</span></li>
+            <li><span class="num">7</span><div class="body">
+              <a class="screen-link" href="P10g Video.html">Live video interview</a>
+              <div class="desc">Same engine, video modality. AI avatar center, captions overlay, self-view tile bottom-right, 8-question progress dots on the left.</div>
+            </div><span class="eta">~30 s</span></li>
+            <li><span class="num">8</span><div class="body">
+              <a class="screen-link" href="P10h Thanks.html">Thank-you</a>
+              <div class="desc">Recap of what Marta said, a pulled quote, and the $75 gift card picker.</div>
+            </div><span class="eta">~20 s</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 4 · PARTICIPANT · SHAREABLE LINK =============================== -->
+      <section class="chapter" id="participant-link">
+        <span class="eyebrow">4 · PARTICIPANT · SHAREABLE LINK + AGENDA · 3 MIN</span>
+        <h2>Same engine, <span class="italic-serif">different front door.</span></h2>
+        <p>
+          When someone opens the bare link (dropped in Slack, on LinkedIn, in a blast) we don't know who they are. They go through a lightweight identity gate, then enter the <strong>same agenda-driven conversation</strong> that walks through voice, video, and form steps in a predictable order.
+        </p>
+
+        <div class="demo">
+          <header><span class="tag">DEMO · E</span><span class="title">Cold link → agenda-driven conversation</span><span class="time">~3 min</span></header>
+          <ol>
+            <li><span class="num">1</span><div class="body">
+              <a class="screen-link" href="P11a Link Landing.html">Link landing</a>
+              <div class="desc">Cold opener ("Whoever you are — welcome") with the full agenda visible up-front. Participants know what they're in for before they start.</div>
+            </div><span class="eta">~30 s</span></li>
+            <li><span class="num">2</span><div class="body">
+              <a class="screen-link" href="P11b Gate.html">Identity gate</a>
+              <div class="desc">First name · last name · email · role · company size · hCaptcha · consent. Agenda progress dots top-right.</div>
+            </div><span class="eta">~30 s</span></li>
+            <li><span class="num">3</span><div class="body">
+              <a class="screen-link" href="P11c Agenda Intro.html">Step 1 · intro (voice)</a>
+              <div class="desc">Agenda rail visible on the left — 7 steps. Center stage is the voice orb.</div>
+              <span class="callout">NOTICE · the agenda rail stays put while the stage swaps</span>
+            </div><span class="eta">~30 s</span></li>
+            <li><span class="num">4</span><div class="body">
+              <a class="screen-link" href="P11d Agenda Video.html">Step 3 · video + screenshare</a>
+              <div class="desc">Participant is sharing a Google-Sheet vendor tracker. AI captions the current question, video tiles bottom-right.</div>
+            </div><span class="eta">~45 s</span></li>
+            <li><span class="num">5</span><div class="body">
+              <a class="screen-link" href="P11e Agenda Form.html">Step 5 · form</a>
+              <div class="desc">Rank four possible improvements. The AI previews its next voice-probe ("why that over the others?") inline.</div>
+            </div><span class="eta">~30 s</span></li>
+            <li><span class="num">6</span><div class="body">
+              <a class="screen-link" href="P11f Builder View.html">Operator view · same agenda</a>
+              <div class="desc">Proof of symmetry: the operator sees the exact same 7 steps in their flow builder. One agenda drives both surfaces.</div>
+            </div><span class="eta">~30 s</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 5 · LIVE ===================================================== -->
+      <section class="chapter" id="live">
+        <span class="eyebrow">5 · LIVE CONVERSATION · 4 MIN</span>
+        <h2>The cockpit — <span class="italic-serif">six modalities, one chrome.</span></h2>
+        <p>
+          From the operator's side, every conversation — regardless of modality — uses the same cockpit: transcript on the left, stage in the middle, agent-intervention console on the right. The stage swaps based on which modality the participant's in right now.
+        </p>
+
+        <div class="demo">
+          <header><span class="tag">DEMO · F</span><span class="title">Cycle through every modality</span><span class="time">~4 min</span></header>
+          <ol>
+            <li><span class="num">1</span><div class="body">
+              <a class="screen-link" href="Live Voice.html">Live · Voice</a>
+              <div class="desc">Tiles for AI and Maria, waveform, mute/hold/keypad controls.</div>
+              <span class="callout">TRY · click the modality tabs at the top — the center stage swaps in-page, no reload</span>
+            </div><span class="eta">~45 s</span></li>
+            <li><span class="num">2</span><div class="body">
+              <a class="screen-link" href="Live Video.html">Live · Video</a>
+              <div class="desc">Full-bleed participant tile (as a striped placeholder), self-view bottom-right, 8 controls.</div>
+            </div><span class="eta">~30 s</span></li>
+            <li><span class="num">3</span><div class="body">
+              <a class="screen-link" href="Live Form.html">Live · Conversational Form</a>
+              <div class="desc">Direct-deposit form sent inside the chat — still inside the cockpit.</div>
+            </div><span class="eta">~30 s</span></li>
+            <li><span class="num">4</span><div class="body">
+              <a class="screen-link" href="Live Present Video.html">Live · Present a video clip</a>
+              <div class="desc">Show Maria a clip. Auto-detects reactions. Emotion markers on the timeline.</div>
+            </div><span class="eta">~30 s</span></li>
+            <li><span class="num">5</span><div class="body">
+              <a class="screen-link" href="Live Present Doc.html">Live · Present a document</a>
+              <div class="desc">Synced PDF page-turning. AI highlights the section it just referenced.</div>
+            </div><span class="eta">~30 s</span></li>
+            <li><span class="num">6</span><div class="body">
+              <a class="screen-link" href="Live Screen Share.html">Live · Screen share</a>
+              <div class="desc">Maria shares her screen. AI notices she's stuck on a field, suggests a hint to send.</div>
+            </div><span class="eta">~45 s</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 6 · SETTINGS ================================================= -->
+      <section class="chapter" id="settings">
+        <span class="eyebrow">6 · ADMIN &amp; SETTINGS · 2 MIN</span>
+        <h2>The boring but necessary <span class="italic-serif">panels.</span></h2>
+        <p>Skim these. They're complete, styled consistently, and ready to wire up last.</p>
+
+        <div class="demo">
+          <header><span class="tag">DEMO · G</span><span class="title">Admin tour</span><span class="time">~2 min</span></header>
+          <ol>
+            <li><span class="num">1</span><div class="body"><a class="screen-link" href="Settings Profile.html">Profile</a><div class="desc">Your details, notifications preferences (email/slack/sms per alert).</div></div><span class="eta">~15 s</span></li>
+            <li><span class="num">2</span><div class="body"><a class="screen-link" href="Settings Team.html">Team &amp; members</a><div class="desc">Active, invited, last-seen. Role chips. Invite flow lives at <a href="Invite Accept.html">Invite Accept</a>.</div></div><span class="eta">~15 s</span></li>
+            <li><span class="num">3</span><div class="body"><a class="screen-link" href="Settings Billing.html">Billing &amp; usage</a><div class="desc">Plan, quota bar, payment method, recent invoices.</div></div><span class="eta">~15 s</span></li>
+            <li><span class="num">4</span><div class="body"><a class="screen-link" href="Settings API.html">API &amp; webhooks</a><div class="desc">Keys, webhook endpoints, quickstart curl snippet.</div></div><span class="eta">~15 s</span></li>
+            <li><span class="num">5</span><div class="body"><a class="screen-link" href="Settings Integrations.html">Integrations</a><div class="desc">Four groups of connectors (ATS, HRIS, Analytics, Messaging).</div></div><span class="eta">~15 s</span></li>
+            <li><span class="num">6</span><div class="body"><a class="screen-link" href="Settings Audit.html">Audit log</a><div class="desc">Every action, actor, IP, and status. Needed for enterprise.</div></div><span class="eta">~15 s</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- 7 · EDGE CASES =============================================== -->
+      <section class="chapter" id="edge">
+        <span class="eyebrow">7 · EDGE CASES · 2 MIN</span>
+        <h2>The screens you hope <span class="italic-serif">nobody sees.</span></h2>
+        <p>Each of these is a designed state, not a default browser error. Show them in QA.</p>
+
+        <div class="callout-row">
+          <a href="404.html" class="chip">404</a>
+          <a href="Permission Denied.html" class="chip">Permission denied</a>
+          <a href="Upgrade Required.html" class="chip">Upgrade required</a>
+          <a href="Rate Limit.html" class="chip">Rate limit</a>
+          <a href="Empty Workspace.html" class="chip">Empty workspace · first run</a>
+          <a href="Offline.html" class="chip">Offline</a>
+          <a href="Invite Accept.html" class="chip">Invite accept</a>
+        </div>
+      </section>
+
+      <!-- 8 · REALITY CHECK ============================================ -->
+      <section class="chapter" id="reality">
+        <span class="eyebrow">8 · REAL VS MOCKED</span>
+        <h2>What actually works, <span class="italic-serif">what's painted on.</span></h2>
+        <p>Before wiring things up, here's the truth of what's interactive vs. what's a picture.</p>
+
+        <div class="reality">
+          <div>
+            <h4>● INTERACTIVE</h4>
+            <ul>
+              <li><span class="mark">✓</span>Sidebar nav between screens</li>
+              <li><span class="mark">✓</span>Campaigns · row checkboxes + bulk-action bar</li>
+              <li><span class="mark">✓</span>Flow Editor · drag nodes, SVG edges follow</li>
+              <li><span class="mark">✓</span>Live · modality tabs swap the center stage</li>
+              <li><span class="mark">✓</span>Builder · quick-start chips pre-fill the input</li>
+              <li><span class="mark">✓</span>Canvas · pan &amp; zoom (ctrl/pinch + drag)</li>
+              <li><span class="mark">✓</span>Participant flow · every link advances the journey</li>
+            </ul>
+          </div>
+          <div>
+            <h4>○ PAINTED ON</h4>
+            <ul>
+              <li><span class="mark">·</span>Form submits, captchas, "Send" buttons</li>
+              <li><span class="mark">·</span>Numeric data (metrics, completion %, sentiment)</li>
+              <li><span class="mark">·</span>AI responses (prefilled chat transcripts)</li>
+              <li><span class="mark">·</span>Voice/video streams (visual placeholders)</li>
+              <li><span class="mark">·</span>Integrations (connect buttons do nothing)</li>
+              <li><span class="mark">·</span>API keys (decorative — not real tokens)</li>
+              <li><span class="mark">·</span>Email inbox &amp; browser chrome (rendered UI, not real)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9 · BEFORE WE SHIP =========================================== -->
+      <section class="chapter" id="ship">
+        <span class="eyebrow">9 · BEFORE WE SHIP</span>
+        <h2>What to wire up, <span class="italic-serif">in priority order.</span></h2>
+        <p>If you're scoping eng work, this is the order we should hit things. The earlier rows unblock everything that follows.</p>
+
+        <div class="demo">
+          <header><span class="tag">SEQUENCE</span><span class="title">Wiring priority</span><span class="time">engineering</span></header>
+          <ol>
+            <li><span class="num">1</span><div class="body">
+              <a class="screen-link" href="Builder Chat.html">Builder · real AI drafting</a>
+              <div class="desc">The empty-state input needs to stream a real draft into the "Builder Chat" canonical view. Everything else in this product assumes this works.</div>
+            </div><span class="eta">P0</span></li>
+            <li><span class="num">2</span><div class="body">
+              <a class="screen-link" href="P10f Voice.html">Live · voice engine</a>
+              <div class="desc">Real WebRTC + STT/TTS on the participant side. All other modalities are variants of this.</div>
+            </div><span class="eta">P0</span></li>
+            <li><span class="num">3</span><div class="body">
+              <a class="screen-link" href="Campaigns.html">Campaigns list · real send</a>
+              <div class="desc">Campaign create → dispatch → real delivery via SMS/voice/email providers. Closes the send loop.</div>
+            </div><span class="eta">P0</span></li>
+            <li><span class="num">4</span><div class="body">
+              <a class="screen-link" href="Participants.html">Participant CRM · data model</a>
+              <div class="desc">Needs the schema for a participant + events + tags before anything queries against it (segments, profile pane, audit log).</div>
+            </div><span class="eta">P1</span></li>
+            <li><span class="num">5</span><div class="body">
+              <a class="screen-link" href="Live Voice.html">Live cockpit · real transcripts</a>
+              <div class="desc">Operator needs to see the live transcript stream in. Agent-console interventions can land after.</div>
+            </div><span class="eta">P1</span></li>
+            <li><span class="num">6</span><div class="body">
+              <a class="screen-link" href="Settings API.html">API &amp; webhooks · real keys</a>
+              <div class="desc">Enables external integrations and is the contract for everything self-serve.</div>
+            </div><span class="eta">P1</span></li>
+            <li><span class="num">7</span><div class="body">
+              <a class="screen-link" href="Sign Up.html">Auth · real SSO</a>
+              <div class="desc">Google, Okta, magic link. Relevant before enterprise but after P0 features exist.</div>
+            </div><span class="eta">P2</span></li>
+            <li><span class="num">8</span><div class="body">
+              <a class="screen-link" href="Settings Billing.html">Billing · metered usage</a>
+              <div class="desc">Per-conversation pricing from the marketing site. Needs usage metering + Stripe integration.</div>
+            </div><span class="eta">P2</span></li>
+          </ol>
+        </div>
+
+        <div class="qs-nav" style="margin-top:40px">
+          <a class="primary" href="Home.html">Open the app · Home →</a>
+          <a href="Screens Index.html">All 51 screens ↗</a>
+          <a href="Comms App UI.html">Design canvas ↗</a>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</body>
+</html>

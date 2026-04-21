@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en" data-mode="light" data-accent="signal">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Comms · Screens Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="src/tokens.css"/>
+<style>
+body { background: var(--bg); }
+.hero {
+  padding: 64px 56px 40px; max-width: 1100px; margin: 0 auto;
+}
+.content {
+  padding: 0 56px 72px; max-width: 1100px; margin: 0 auto;
+}
+.section-card {
+  border: 1px solid var(--line); border-radius: 16px;
+  background: var(--bg-elev); padding: 28px 32px; margin-bottom: 20px;
+}
+.section-card.hero-card {
+  background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+  padding: 36px 36px;
+}
+.screen-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px;
+}
+.screen-link {
+  display: block; padding: 8px 12px; border-radius: 8px;
+  font-size: 13px; color: var(--ink-2); transition: all 120ms ease;
+}
+.screen-link:hover { background: var(--chip); color: var(--ink); }
+.v2-group-title {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em;
+  color: var(--ink-3); margin: 16px 0 6px; grid-column: 1 / -1;
+}
+.v2-group-title:first-child { margin-top: 0; }
+.chip-new {
+  display: inline-block; font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.08em; padding: 3px 10px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-weight: 500;
+  margin-bottom: 10px;
+}
+.label-row {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px;
+}
+.label-pill {
+  font-family: var(--mono); font-size: 10.5px; color: var(--ink-3);
+  letter-spacing: 0.04em; padding: 4px 10px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg-elev);
+}
+.toggle-btn {
+  background: none; border: 1px solid var(--line-2); border-radius: 999px;
+  padding: 6px 14px; font-size: 12px; color: var(--ink-3); cursor: pointer;
+  font-family: var(--sans); transition: all 120ms ease;
+}
+.toggle-btn:hover { border-color: var(--ink); color: var(--ink); }
+.other-links { display: flex; flex-direction: column; gap: 6px; }
+.other-links a {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; color: var(--ink-2); padding: 6px 0;
+  transition: color 120ms ease;
+}
+.other-links a:hover { color: var(--ink); }
+.other-links a span { color: var(--ink-4); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="meta" style="margin-bottom:10px">COMMS · APP UI · SCREENS INDEX</div>
+  <h1 style="font-family:var(--sans); font-weight:500; letter-spacing:-0.03em; font-size:48px; line-height:1.06; margin:0; max-width:18ch;">
+    Every screen we've built, <span class="italic-serif" style="color:var(--ink-3)">one click away.</span>
+  </h1>
+</header>
+
+<div class="content">
+
+  <!-- SECTION 1: MAGIC V1 -->
+  <div class="section-card hero-card">
+    <span class="chip-new">NEW</span>
+    <h2 style="font-family:var(--sans); font-size:24px; font-weight:600; margin:0 0 4px; letter-spacing:-0.015em;">Magic V1</h2>
+    <p style="font-size:15px; color:var(--ink-2); margin:0 0 4px; line-height:1.4;">Simplified enterprise app &mdash; Build, Send, Review</p>
+    <p style="font-size:14px; color:var(--ink-3); margin:0 0 20px; line-height:1.55; max-width:56ch;">
+      Same design system, same chrome. Stripped down to 3 screens: Builder (voice-first creation), Conversations (sent + results), People (participant directory).
+    </p>
+    <a href="Magic Builder.html" style="
+      display:inline-block; background:var(--ink); color:var(--bg);
+      padding:12px 28px; border-radius:999px; font-size:15px; font-weight:500;
+      letter-spacing:-0.005em; text-decoration:none;
+    ">Open Magic V1 &rarr;</a>
+    <div class="screen-grid" style="margin-top:16px;">
+      <a class="screen-link" href="Magic Builder.html">Builder</a>
+      <a class="screen-link" href="Magic Conversations.html">Conversations</a>
+      <a class="screen-link" href="Magic People.html">People</a>
+    </div>
+    <div class="label-row">
+      <span class="label-pill">Voice-first</span>
+      <span class="label-pill">3 screens</span>
+      <span class="label-pill">AI summaries</span>
+      <span class="label-pill">Sidebar nav</span>
+    </div>
+  </div>
+
+  <!-- SECTION 2: ENTERPRISE -->
+  <div class="section-card">
+    <h2 style="font-family:var(--sans); font-size:20px; font-weight:600; margin:0 0 4px; letter-spacing:-0.01em;">Enterprise</h2>
+    <p style="font-size:14px; color:var(--ink-3); margin:0 0 14px; line-height:1.4;">Full application with campaigns, people, templates</p>
+    <a href="Home.html" style="
+      display:inline-block; background:var(--ink); color:var(--bg);
+      padding:9px 22px; border-radius:999px; font-size:13px; font-weight:500;
+      text-decoration:none; margin-bottom:14px;
+    ">Open Enterprise &rarr;</a>
+    <div class="screen-grid">
+      <a class="screen-link" href="Home.html">Home</a>
+      <a class="screen-link" href="Builder.html">Builder</a>
+      <a class="screen-link" href="Campaigns.html">Campaigns</a>
+      <a class="screen-link" href="Campaign Detail.html">Campaign Detail</a>
+      <a class="screen-link" href="Participants.html">People</a>
+      <a class="screen-link" href="Participant Detail.html">Participant Detail</a>
+      <a class="screen-link" href="Conversation Replay.html">Conversation Replay</a>
+      <a class="screen-link" href="Search.html">Search</a>
+      <a class="screen-link" href="Templates.html">Templates</a>
+      <a class="screen-link" href="Template Detail.html">Template Detail</a>
+      <a class="screen-link" href="Send.html">Send</a>
+      <a class="screen-link" href="Preview.html">Preview</a>
+      <a class="screen-link" href="Settings Profile.html">Settings</a>
+      <a class="screen-link" href="Onboarding.html">Onboarding</a>
+      <a class="screen-link" href="Sign Up.html">Sign Up</a>
+      <a class="screen-link" href="Log In.html">Log In</a>
+    </div>
+  </div>
+
+  <!-- SECTION 3: V2 REFERENCE -->
+  <div class="section-card" id="v2-section">
+    <div style="display:flex; align-items:center; justify-content:space-between;">
+      <div>
+        <h2 style="font-family:var(--sans); font-size:20px; font-weight:600; margin:0 0 4px; letter-spacing:-0.01em;">V2 Reference Library</h2>
+        <p style="font-size:14px; color:var(--ink-3); margin:0; line-height:1.4;">All screens from the full build — kept for future reference</p>
+      </div>
+      <button class="toggle-btn" id="v2-toggle" onclick="
+        var inner = document.getElementById('v2-inner');
+        var btn = document.getElementById('v2-toggle');
+        if (inner.style.display === 'none') { inner.style.display = 'block'; btn.textContent = 'Hide'; }
+        else { inner.style.display = 'none'; btn.textContent = 'Show'; }
+      ">Show</button>
+    </div>
+    <div id="v2-inner" style="display:none; margin-top:18px;">
+      <div class="screen-grid">
+        <div class="v2-group-title">BUILDER</div>
+        <a class="screen-link" href="Flow Editor.html">Flow Editor</a>
+        <a class="screen-link" href="Session Wizard.html">Session Wizard</a>
+        <a class="screen-link" href="Builder Chat.html">Builder Chat</a>
+        <a class="screen-link" href="Builder Edit Step.html">Builder Edit Step</a>
+        <a class="screen-link" href="Dispatch.html">Dispatch</a>
+
+        <div class="v2-group-title">LIVE</div>
+        <a class="screen-link" href="Live Voice.html">Voice</a>
+        <a class="screen-link" href="Live Video.html">Video</a>
+        <a class="screen-link" href="Live Form.html">Form</a>
+        <a class="screen-link" href="Live Screen Share.html">Screen Share</a>
+        <a class="screen-link" href="Live Present Doc.html">Present Doc</a>
+        <a class="screen-link" href="Live Present Video.html">Present Video</a>
+
+        <div class="v2-group-title">PARTICIPANT EMAIL (P10)</div>
+        <a class="screen-link" href="P10a Inbox.html">Inbox</a>
+        <a class="screen-link" href="P10b Email.html">Email</a>
+        <a class="screen-link" href="P10c Landing.html">Landing</a>
+        <a class="screen-link" href="P10d Consent.html">Consent</a>
+        <a class="screen-link" href="P10e Device Check.html">Device</a>
+        <a class="screen-link" href="P10f Voice.html">Voice</a>
+        <a class="screen-link" href="P10g Video.html">Video</a>
+        <a class="screen-link" href="P10h Thanks.html">Thanks</a>
+
+        <div class="v2-group-title">PARTICIPANT LINK (P11)</div>
+        <a class="screen-link" href="P11a Link Landing.html">Landing</a>
+        <a class="screen-link" href="P11b Gate.html">Gate</a>
+        <a class="screen-link" href="P11c Agenda Intro.html">Intro</a>
+        <a class="screen-link" href="P11d Agenda Video.html">Video</a>
+        <a class="screen-link" href="P11e Agenda Form.html">Form</a>
+        <a class="screen-link" href="P11f Builder View.html">Builder View</a>
+
+        <div class="v2-group-title">EDGE</div>
+        <a class="screen-link" href="404.html">404</a>
+        <a class="screen-link" href="Offline.html">Offline</a>
+        <a class="screen-link" href="Permission Denied.html">Permission Denied</a>
+        <a class="screen-link" href="Rate Limit.html">Rate Limit</a>
+        <a class="screen-link" href="Upgrade Required.html">Upgrade Required</a>
+        <a class="screen-link" href="Empty Workspace.html">Empty Workspace</a>
+        <a class="screen-link" href="Invite Accept.html">Invite Accept</a>
+
+        <div class="v2-group-title">OTHER</div>
+        <a class="screen-link" href="Analytics.html">Analytics</a>
+        <a class="screen-link" href="Notifications.html">Notifications</a>
+        <a class="screen-link" href="Segments.html">Segments</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: OTHER -->
+  <div class="section-card">
+    <div class="other-links">
+      <a href="Lifecycle.html">Lifecycle Walkthrough <span>&rarr;</span></a>
+      <a href="Try It.html">Try It (all modalities) <span>&rarr;</span></a>
+      <a href="Branding.html">Branding & Design System <span>&rarr;</span></a>
+      <a href="Team Walkthrough.html">Team Walkthrough <span>&rarr;</span></a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
