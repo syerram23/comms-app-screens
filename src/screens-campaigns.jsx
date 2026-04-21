@@ -112,6 +112,21 @@ function ScreenCampaigns() {
   );
 }
 
+function ActionBtn({ label }) {
+  const [done, setDone] = React.useState(false);
+  return (
+    <button onClick={() => setDone(true)} style={{
+      background: done ? 'var(--accent-soft)' : 'transparent',
+      border: done ? '1px solid var(--accent)' : '1px solid var(--line)',
+      color: done ? 'var(--accent-ink)' : 'var(--ink-2)',
+      padding: '5px 12px', borderRadius: 8, fontSize: 12, fontWeight: 500,
+      cursor: 'pointer', transition: 'all 0.2s',
+    }}>
+      {done ? '\u2713 Done' : label}
+    </button>
+  );
+}
+
 function ScreenCampaignDetail() {
   return (
     <AppFrame active="campaigns" screenLabel="04b Campaigns · Detail + drawer"
@@ -141,6 +156,36 @@ function ScreenCampaignDetail() {
                 background: 'var(--bg-elev)',
               }} />
             </div>
+          </div>
+
+          {/* Take Action — campaign level */}
+          <div style={{
+            border: '1px solid var(--line)', borderRadius: 14, padding: 20,
+            marginBottom: 24, margin: '20px 28px 0', background: 'var(--bg-elev)',
+          }}>
+            <div className="meta" style={{ marginBottom: 14 }}>TAKE ACTION · CONTRACTOR ONBOARDING</div>
+
+            {[
+              { priority: '#d44', label: 'URGENT', title: '2 people haven\u2019t started', desc: 'Jordan Reyes and Maria Chen haven\u2019t opened their invitation email.', actions: ['Send reminder to both', 'Call Jordan'] },
+              { priority: '#d44', label: 'URGENT', title: '2 NDAs unsigned', desc: 'Ashley Tran and Devon Park started the signature step but didn\u2019t complete it.', actions: ['Send NDA follow-up'] },
+              { priority: 'oklch(0.7 0.15 70)', label: 'RECOMMENDED', title: '3 insurance certs need review', desc: 'Nina Patel\u2019s cert flagged for coverage amount. 2 others had retry uploads.', actions: ['Review flagged documents'] },
+              { priority: 'oklch(0.7 0.15 70)', label: 'RECOMMENDED', title: 'Update insurance cert instructions', desc: '25% retry rate suggests the current instructions aren\u2019t clear enough.', actions: ['Edit conversation step'] },
+              { priority: 'var(--ink-4)', label: 'OPTIONAL', title: 'Export completed documents', desc: '10 participants have all documents validated and ready for filing.', actions: ['Export to SharePoint', 'Download ZIP'] },
+            ].map((item, i) => (
+              <div key={i} style={{
+                padding: '12px 14px', borderBottom: i < 4 ? '1px solid var(--line)' : 'none',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: item.priority, flexShrink: 0 }} />
+                  <span style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.05em', color: item.priority === '#d44' ? '#d44' : 'var(--ink-3)' }}>{item.label}</span>
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 3 }}>{item.title}</div>
+                <div style={{ fontSize: 12, color: 'var(--ink-3)', marginBottom: 8, lineHeight: 1.5 }}>{item.desc}</div>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {item.actions.map(a => <ActionBtn key={a} label={a} />)}
+                </div>
+              </div>
+            ))}
           </div>
 
           <PageHead eyebrow="CAMPAIGN · NPS"

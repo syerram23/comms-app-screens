@@ -2,6 +2,21 @@
 // Phase 8 · DETAIL VIEWS — Participant + Conversation
 // ============================================================
 
+function ActionBtn({ label }) {
+  const [done, setDone] = React.useState(false);
+  return (
+    <button onClick={() => setDone(true)} style={{
+      background: done ? 'var(--accent-soft)' : 'transparent',
+      border: done ? '1px solid var(--accent)' : '1px solid var(--line)',
+      color: done ? 'var(--accent-ink)' : 'var(--ink-2)',
+      padding: '5px 12px', borderRadius: 8, fontSize: 12, fontWeight: 500,
+      cursor: 'pointer', transition: 'all 0.2s',
+    }}>
+      {done ? '\u2713 Done' : label}
+    </button>
+  );
+}
+
 function ScreenParticipantDetail() {
   return (
     <AppFrame active="people" screenLabel="08a Participant · Detail"
@@ -378,6 +393,33 @@ function ScreenConversationDetail() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Take Action — individual */}
+          <div style={{ marginBottom: 20 }}>
+            <div className="meta" style={{ marginBottom: 12 }}>RECOMMENDED ACTIONS · MAR\u00CDA ORTEGA</div>
+
+            {[
+              { priority: '#d44', label: 'URGENT', title: 'Insurance cert expires in 14 days', desc: 'Current certificate expires Mar 28, 2027. Send renewal reminder now.', actions: ['Send renewal reminder'] },
+              { priority: 'oklch(0.7 0.15 70)', label: 'RECOMMENDED', title: 'Request PDF version of W-9', desc: 'W-9 was uploaded as a photo. Request a cleaner PDF for records.', actions: ['Request updated document'] },
+              { priority: 'oklch(0.7 0.15 70)', label: 'RECOMMENDED', title: 'Follow up on scheduling concern', desc: 'Mar\u00EDa mentioned scheduling issues during voice response at 2:14.', actions: ['View transcript', 'Schedule follow-up'] },
+              { priority: 'var(--ink-4)', label: 'OPTIONAL', title: 'Add to Q2 compliance segment', desc: 'Add Mar\u00EDa to the compliance tracking segment for bulk monitoring.', actions: ['Add to segment'] },
+            ].map((item, i) => (
+              <div key={i} style={{
+                padding: '12px 14px', border: '1px solid var(--line)', borderRadius: 10,
+                marginBottom: 8, background: 'var(--bg-elev)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: item.priority, flexShrink: 0 }} />
+                  <span style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.05em', color: item.priority === '#d44' ? '#d44' : 'var(--ink-3)' }}>{item.label}</span>
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 3 }}>{item.title}</div>
+                <div style={{ fontSize: 12, color: 'var(--ink-3)', marginBottom: 8, lineHeight: 1.5 }}>{item.desc}</div>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {item.actions.map(a => <ActionBtn key={a} label={a} />)}
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Actions */}

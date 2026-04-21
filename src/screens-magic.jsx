@@ -12,6 +12,21 @@
 
 const { useState, useEffect, useRef } = React;
 
+function ActionBtn({ label }) {
+  const [done, setDone] = React.useState(false);
+  return (
+    <button onClick={() => setDone(true)} style={{
+      background: done ? 'var(--accent-soft)' : 'transparent',
+      border: done ? '1px solid var(--accent)' : '1px solid var(--line)',
+      color: done ? 'var(--accent-ink)' : 'var(--ink-2)',
+      padding: '5px 12px', borderRadius: 8, fontSize: 12, fontWeight: 500,
+      cursor: 'pointer', transition: 'all 0.2s',
+    }}>
+      {done ? '\u2713 Done' : label}
+    </button>
+  );
+}
+
 // ── Nav mapping ──
 const MAGIC_NAV_HREF = {
   builder:       'Magic Builder.html',
@@ -870,6 +885,37 @@ function ScreenMagicConversations() {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Take Action */}
+          {selected === 0 && (
+            <div style={{
+              border: '1px solid var(--line)', borderRadius: 12, padding: 16,
+              marginBottom: 14, background: 'var(--bg-elev)', animation: 'fade-up 0.4s ease 0.13s both',
+            }}>
+              <div className="meta" style={{ marginBottom: 12 }}>TAKE ACTION</div>
+
+              {[
+                { priority: '#d44', label: 'URGENT', title: '2 people haven\u2019t started', desc: 'Jordan Reyes and Maria Chen — send a reminder or call.', actions: ['Send reminder', 'Call'] },
+                { priority: '#d44', label: 'URGENT', title: '2 NDAs need follow-up', desc: 'Ashley Tran and Devon Park started but didn\u2019t finish signing.', actions: ['Send NDA follow-up'] },
+                { priority: 'oklch(0.7 0.15 70)', label: 'RECOMMENDED', title: 'Review 3 flagged insurance certs', desc: 'Coverage amounts need manual verification.', actions: ['Review documents'] },
+                { priority: 'var(--ink-4)', label: 'OPTIONAL', title: 'Export completed docs for 10 people', desc: 'All documents validated and ready.', actions: ['Export', 'Download'] },
+              ].map((item, i) => (
+                <div key={i} style={{
+                  padding: '10px 0', borderBottom: i < 3 ? '1px solid var(--line)' : 'none',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: item.priority, flexShrink: 0 }} />
+                    <span style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.05em', color: item.priority === '#d44' ? '#d44' : 'var(--ink-3)' }}>{item.label}</span>
+                  </div>
+                  <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 2 }}>{item.title}</div>
+                  <div style={{ fontSize: 11, color: 'var(--ink-3)', marginBottom: 6 }}>{item.desc}</div>
+                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                    {item.actions.map(a => <ActionBtn key={a} label={a} />)}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
